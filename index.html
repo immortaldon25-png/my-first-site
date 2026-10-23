@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My First Site</title>
+</head>
+<body>
+  <h1 id="title">Hello, world</h1>
+  <button id="btn">Click me</button>
+
+  <script>
+    const title = document.getElementById("title");
+    const btn = document.getElementById("btn");
+
+    btn.addEventListener("click", () => {
+      title.textContent = "I wrote JavaScript!";
+    });
+  </script>
+</body>
+</html>
