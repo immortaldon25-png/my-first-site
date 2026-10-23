@@ -4,15 +4,18 @@
   <title>My First Site</title>
 </head>
 <body>
-  <h1 id="title">Hello, world</h1>
+  <h1 id="title">Clicks: 0</h1>
   <button id="btn">Click me</button>
 
   <script>
+    let count = 0;
+
     const title = document.getElementById("title");
     const btn = document.getElementById("btn");
 
     btn.addEventListener("click", () => {
-      title.textContent = "I wrote JavaScript!";
+      count = count + 1;
+      title.textContent = "Clicks: " + count;
     });
   </script>
 </body>
