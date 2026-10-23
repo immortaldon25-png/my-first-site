@@ -1,22 +1,184 @@
-<!DOCTYPE html>
-<html>
+DOCTYPE html>
+<html lang="en" data-theme="dark">
 <head>
-  <title>My First Site</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Danny | Developer & Illustrator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#171717; --fg:#ffffff; --muted:#8b8b92; --hex:#1e1e1e; --card:#0b0c10; --line:#3a3a3a; }
+:root[data-theme="light"] { --bg:#f4f4f2; --fg:#151515; --muted:#6b6b70; --hex:#ebebe8; --card:#ffffff; --line:#c9c9c4; }
+* { box-sizing:border-box; margin:0; }
+html,body { height:100%; }
+body { background:var(--bg); color:var(--fg); font-family:"Hanken Grotesk",system-ui,sans-serif;
+       overflow:hidden; transition:background .3s,color .3s; }
+a { color:inherit; text-decoration:none; }
+button { font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+.label { font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; }
+
+/* nav */
+nav { position:fixed; top:0; left:0; right:0; z-index:10; display:flex; justify-content:space-between;
+      align-items:center; padding:max(18px,env(safe-area-inset-top)) 11% 0; }
+nav .right { display:flex; gap:22px; align-items:center; }
+nav a.active { color:var(--fg); } nav a { color:var(--muted); }
+.logo { font-size:1.6rem; font-weight:500; color:var(--fg); }
+
+/* floating hexagons */
+.hex { position:fixed; background:var(--hex); clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%);
+       animation:float 14s ease-in-out infinite alternate; z-index:0; }
+@keyframes float { from { transform:translate(0,0) rotate(0); } to { transform:translate(18px,-26px) rotate(14deg); } }
+
+/* views */
+.view { position:fixed; inset:0; display:none; z-index:1; }
+.view.on { display:block; }
+
+/* home */
+.hero { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:min(78vw,520px); }
+.hero .hey { color:var(--muted); margin-bottom:4px; }
+.hero h1 { font-size:clamp(3.6rem,20vw,7.5rem); font-weight:800; line-height:.95; letter-spacing:-.01em; text-transform:uppercase; }
+.hero .role { color:var(--muted); text-align:right; margin-top:8px; }
+.links { display:flex; justify-content:space-between; margin-top:30px; }
+.links a { border-bottom:1px solid var(--muted); padding-bottom:2px; }
+.social { position:absolute; left:11%; bottom:max(28px,env(safe-area-inset-bottom)); display:flex; flex-direction:column; gap:14px; align-items:center; }
+.social i { width:1px; height:44px; background:var(--line); display:block; margin-bottom:6px; }
+.social svg { width:13px; height:13px; fill:var(--muted); display:block; }
+
+/* projects carousel */
+.stage { position:absolute; top:50%; left:0; right:0; transform:translateY(-50%); height:380px; perspective:1100px; touch-action:pan-y; }
+.card { position:absolute; top:0; left:50%; width:min(72vw,330px); height:330px; margin-left:calc(min(72vw,330px) / -2);
+        background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+        transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .55s; cursor:pointer; }
+.art { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:4rem; }
+.art.a1 { background:repeating-linear-gradient(90deg,#05060a 0 38px,#c46a12 38px 44px,#05060a 44px 70px,#1f9d84 70px 74px); color:#fff; }
+.art.a2 { background:radial-gradient(circle at 30% 30%,#3b3b6b,#0b0c10 70%); color:#fff; }
+.art.a3 { background:linear-gradient(135deg,#6b2f3b,#0b0c10); color:#fff; }
+.info { position:absolute; left:10px; right:10px; bottom:10px; padding:10px 12px; border-radius:10px;
+        background:rgba(0,0,0,.72); color:#fff; font-size:.72rem; text-align:center; line-height:1.4; }
+.info b { display:block; font-size:.8rem; margin-bottom:2px; }
+.dots { position:absolute; left:0; right:0; top:calc(50% + 210px); display:flex; gap:7px; justify-content:center; }
+.dots button { width:5px; height:5px; border-radius:50%; background:var(--line); padding:0; }
+.dots button.on { background:var(--fg); }
+
+/* contact */
+.contact { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:min(78vw,520px); }
+.contact h2 { font-size:clamp(2.4rem,13vw,4rem); font-weight:800; text-transform:uppercase; line-height:1; margin-bottom:18px; }
+.contact p { color:var(--muted); font-size:.95rem; line-height:1.6; margin-bottom:22px; max-width:42ch; }
+.contact a.mail { font-size:1.15rem; border-bottom:1px solid var(--fg); padding-bottom:2px; }
+.contact ul { list-style:none; padding:0; margin-top:34px; }
+.contact li { padding:10px 0; border-top:1px solid var(--line); font-size:.9rem; display:flex; justify-content:space-between; gap:16px; }
+.contact li span { color:var(--muted); text-align:right; }
+
+@media (prefers-reduced-motion:reduce) { .hex { animation:none; } .card { transition:none; } }
+</style>
 </head>
 <body>
-  <h1 id="title">Clicks: 0</h1>
-  <button id="btn">Click me</button>
 
-  <script>
-    let count = 0;
+<div class="hex" style="width:110px;height:110px;top:12%;left:62%"></div>
+<div class="hex" style="width:56px;height:56px;top:20%;left:24%;animation-delay:-4s"></div>
+<div class="hex" style="width:60px;height:60px;top:32%;left:20%;animation-delay:-8s"></div>
+<div class="hex" style="width:90px;height:90px;top:62%;left:36%;animation-delay:-2s"></div>
+<div class="hex" style="width:120px;height:120px;top:80%;left:10%;animation-delay:-6s"></div>
+<div class="hex" style="width:80px;height:80px;top:72%;left:84%;animation-delay:-10s"></div>
 
-    const title = document.getElementById("title");
-    const btn = document.getElementById("btn");
+<nav>
+  <a href="#" class="logo" aria-label="Home">*</a>
+  <div class="right label">
+    <a href="#projects" data-nav="projects">Projects</a>
+    <a href="#contact" data-nav="contact">Contact</a>
+    <button id="theme" aria-label="Toggle light and dark theme">&#9788;</button>
+  </div>
+</nav>
 
-    btn.addEventListener("click", () => {
-      count = count + 1;
-      title.textContent = "Clicks: " + count;
-    });
-  </script>
+<!-- HOME -->
+<section class="view on" id="home">
+  <div class="hero">
+    <p class="hey label">Hey, I'm</p>
+    <h1>Danny</h1>
+    <p class="role label">A developer &amp; illustrator</p>
+    <div class="links label">
+      <a href="#projects">&rarr; View projects</a>
+      <a href="#">Resume</a>
+    </div>
+  </div>
+  <div class="social">
+    <i></i>
+    <a href="https://github.com/immortaldon25-png" aria-label="GitHub">
+      <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="view" id="projects">
+  <div class="stage" id="stage">
+    <div class="card"><div class="art a1">0&rarr;5</div>
+      <div class="info"><b>Click Counter</b>My first JavaScript project, built and deployed from my phone. HTML, CSS, JavaScript.
+        <br><a href="https://immortaldon25-png.github.io/my-first-site" style="text-decoration:underline">Live demo</a></div></div>
+    <div class="card"><div class="art a2">&lt;/&gt;</div>
+      <div class="info"><b>This portfolio</b>Hand-coded with HTML, CSS and JavaScript, hosted free on GitHub Pages.</div></div>
+    <div class="card"><div class="art a3">&#9998;</div>
+      <div class="info"><b>Illustration samples</b>Coming soon. Selected illustration work will be added here.</div></div>
+  </div>
+  <div class="dots" id="dots"></div>
+</section>
+
+<!-- CONTACT -->
+<section class="view" id="contact">
+  <div class="contact">
+    <h2>Say hi</h2>
+    <p>Available for small websites, illustration and data entry work. Send me a message and I'll reply soon.</p>
+    <a class="mail" href="mailto:immortaldon25@gmail.com">immortaldon25@gmail.com</a>
+    <ul>
+      <li>Application creation <span>Websites and web apps</span></li>
+      <li>Illustration <span>Custom visuals</span></li>
+      <li>Data entry <span>Accurate, fast, organized</span></li>
+    </ul>
+  </div>
+</section>
+
+<script>
+/* routing: #projects, #contact, otherwise home */
+const views = { home:document.getElementById("home"), projects:document.getElementById("projects"), contact:document.getElementById("contact") };
+function route() {
+  const key = location.hash.replace("#","");
+  const name = views[key] ? key : "home";
+  Object.entries(views).forEach(([k,el]) => el.classList.toggle("on", k===name));
+  document.querySelectorAll("[data-nav]").forEach(a => a.classList.toggle("active", a.dataset.nav===name));
+}
+addEventListener("hashchange", route); route();
+
+/* theme */
+const root = document.documentElement;
+try { const t = localStorage.getItem("theme"); if (t) root.dataset.theme = t; } catch(e) {}
+document.getElementById("theme").onclick = () => {
+  root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+  try { localStorage.setItem("theme", root.dataset.theme); } catch(e) {}
+};
+
+/* 3D carousel */
+const cards = [...document.querySelectorAll("#stage .card")];
+const dots = document.getElementById("dots");
+let active = 0;
+cards.forEach((_,i) => { const b=document.createElement("button"); b.setAttribute("aria-label","Project "+(i+1)); b.onclick=()=>go(i); dots.appendChild(b); });
+function go(n) { active = Math.max(0, Math.min(cards.length-1, n)); draw(); }
+function draw() {
+  cards.forEach((c,i) => {
+    const o = i - active;
+    c.style.transform = `translateX(${o*68}%) translateZ(${-Math.abs(o)*120}px) rotateY(${o*-38}deg) scale(${o===0?1:.9})`;
+    c.style.opacity = Math.abs(o) > 1 ? 0 : (o===0 ? 1 : .55);
+    c.style.zIndex = 10 - Math.abs(o);
+    c.style.pointerEvents = Math.abs(o) > 1 ? "none" : "auto";
+  });
+  [...dots.children].forEach((d,i) => d.classList.toggle("on", i===active));
+}
+cards.forEach((c,i) => c.addEventListener("click", e => { if (i !== active) { e.preventDefault(); go(i); } }));
+let x0 = null; const stage = document.getElementById("stage");
+stage.addEventListener("touchstart", e => x0 = e.touches[0].clientX, {passive:true});
+stage.addEventListener("touchend", e => { if (x0===null) return; const dx = e.changedTouches[0].clientX - x0;
+  if (Math.abs(dx) > 40) go(active + (dx < 0 ? 1 : -1)); x0 = null; });
+addEventListener("keydown", e => { if (e.key==="ArrowRight") go(active+1); if (e.key==="ArrowLeft") go(active-1); });
+draw();
+</script>
 </body>
 </html>
